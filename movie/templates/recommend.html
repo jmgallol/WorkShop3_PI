@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Recomendación</title></head>
+<body>
+  <h1>Recomendación por embeddings</h1>
+
+  <form method="get" action="{% url 'recommend' %}">
+    <input type="text" name="q" placeholder="Escribe tu descripción..." value="{{ query|default:'' }}" style="width:420px">
+    <button type="submit">Buscar</button>
+  </form>
+
+  {% if query and result %}
+    <h2>Resultado para: "{{ query }}"</h2>
+    <p><strong>Recomendada:</strong> {{ result.1.title }} (score {{ result.0|floatformat:4 }})</p>
+
+    <h3>Top 5</h3>
+    <ol>
+      {% for s, m in top_k %}
+        <li>{{ m.title }} — {{ s|floatformat:4 }}</li>
+      {% endfor %}
+    </ol>
+  {% elif query %}
+    <p>No se encontraron resultados.</p>
+  {% endif %}
+</body>
+</html>
